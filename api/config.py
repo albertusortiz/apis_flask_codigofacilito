@@ -3,7 +3,8 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/api'
+    #SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/api'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://albertusortiz:212712@localhost/api'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 config = {
