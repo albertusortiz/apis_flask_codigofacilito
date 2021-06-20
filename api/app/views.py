@@ -1,13 +1,13 @@
-from flask import jsonify
 from flask import Blueprint
-from flask.blueprints import BlueprintSetupState
+
+from .responses import response
 
 api_v1 = Blueprint('api', __name__, url_prefix='/api/v1')
 
 @api_v1.route('/tasks', methods=['GET'])
 def get_tasks():
-    return jsonify({
-        'message': 'Hola, desde el endpoint listado de tareas.'
+    return response({
+        'mensaje': 'Nuevo mensaje'
     })
 
 @api_v1.route('/tasks/<id>', methods=['GET'])
