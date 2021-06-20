@@ -60,10 +60,35 @@ class TestAPI(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.data.decode('utf-8'))
-        task = data['data']
-        task_id = task['id']
+        task_id = data['data']['id']
 
         self.assertEqual(task_id, 3)
+
+    def test_update_task(self):
+        data = {
+            'title': 'Nuevo titulo'
+        }
+
+        new_path = self.path + '/1'
+        response = self.client.put(path=new_path, data=json.dumps(data), content_type=self.content_type)
+
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.data.decode('utf-8'))
+        title = data['data']['title']
+
+        self.assertEqual(title, 'Nuevo titulo')
+
+    def test_update_not_found(self):
+        data = {
+            'title': 'Nuevo titulo'
+        }
+
+        new_path = self.path + '/100'
+        response = self.client.put(path=new_path, data=json.dumps(data), content_type=self.content_type)
+
+        self.assertEqual(response.status_code, 404)
+
+
 
 
 if __name__ == '__main__':
