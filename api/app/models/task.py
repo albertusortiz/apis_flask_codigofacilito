@@ -11,6 +11,18 @@ class Task(db.Model):
     deadline = db.Column(db.DateTime(), nullable=False)
     created_at = db.Column(db.DateTime(), nullable=False, default=db.func.current_timestamp())
 
+    @classmethod
+    def new(cls, title, description, deadline):
+        return Task(title=title, description=description, deadline=deadline)
+
+    def save(self):
+        try:
+            db.session.add(self)
+            db.session.commit()
+            return True
+        except:
+            return False
+
     def __str__(self):
         return self.title
 
