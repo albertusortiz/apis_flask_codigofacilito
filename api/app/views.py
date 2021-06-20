@@ -1,14 +1,18 @@
 from flask import Blueprint
 
+from .models.task import Task
 from .responses import response
 
 api_v1 = Blueprint('api', __name__, url_prefix='/api/v1')
 
 @api_v1.route('/tasks', methods=['GET'])
 def get_tasks():
-    return response({
-        'mensaje': 'Nuevo mensaje'
-    })
+
+    tasks = Task.query.all() # SELECT * FROM tasks;
+
+    return response([
+        task.serialize() for task in tasks
+    ])
 
 @api_v1.route('/tasks/<id>', methods=['GET'])
 def get_task():
