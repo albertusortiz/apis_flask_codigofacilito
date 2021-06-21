@@ -1,12 +1,13 @@
 from flask import json, jsonify
 
-def bad_request():
+def bad_request(details_error="We don't have datails"):
     return jsonify(
         {
             'success': False,
             'data': {},
             'messages': 'Bad request',
-            'code': 400
+            'code': 400,
+            'details_error': details_error,
         }
     ), 400
 
