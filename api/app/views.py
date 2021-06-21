@@ -8,6 +8,9 @@ from .responses import response
 from .responses import not_found
 from .responses import bad_request
 
+from .schemas import task_schema
+from .schemas import tasks_schema
+
 api_v1 = Blueprint('api', __name__, url_prefix='/api/v1')
 
 def set_task(function):
@@ -34,14 +37,12 @@ def get_tasks():
     #tasks = Task.query.all() # SELECT * FROM tasks;
     tasks = Task.get_by_page(order, page)
 
-    return response([
-        task.serialize() for task in tasks
-    ])
+    return response(tasks_schema.dump(tasks))
 
 @api_v1.route('/tasks/<id>', methods=['GET'])
 @set_task
 def get_task(task):
-    return response(task.serialize())
+    return response(task_schema.dump(task))
 
 @api_v1.route('/tasks/', methods=['POST'])
 def create_task():
@@ -58,7 +59,7 @@ def create_task():
 
     task = Task.new(json['title'], json['description'], json['deadline'])
     if task.save():
-        return response(task.serialize())
+        return response(task_schema.dump(task))
     
     return bad_request()
 
@@ -72,7 +73,7 @@ def update_task(task):
     task.deadline = json.get('deadline', task.deadline)
 
     if task.save():
-        return response(task.serialize())
+        return response(task_schema.dump(task))
 
     return bad_request()
 
@@ -80,6 +81,6 @@ def update_task(task):
 @set_task
 def delete_task(task):
     if task.delete():
-        return response(task.serialize())
+        return response(task_schema.dump(task))
 
     return bad_request()
