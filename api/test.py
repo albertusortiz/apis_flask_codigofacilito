@@ -88,7 +88,14 @@ class TestAPI(unittest.TestCase):
 
         self.assertEqual(response.status_code, 404)
 
+    def test_delete_task(self):
+        new_path = self.path + '/1'
 
+        response = self.client.delete(path=new_path, content_type=self.content_type)
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.get(path=new_path, content_type=self.content_type)
+        self.assertEqual(response.status_code, 404)
 
 
 if __name__ == '__main__':
